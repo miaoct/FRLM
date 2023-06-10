@@ -1,0 +1,54 @@
+NAME: 'C23_XCP_landmark_mask_5-11-30frames-dr0.9-er0.7-ed4-nr0.8-nd4-mr0.9-md3'
+OUTPUT_DIR: './output/C23_new'
+SHOW_STEP: 100
+INPUT_SIZE: (299, 299)
+RESUME_MODEL: ""
+CPU_MODE: False
+RANDOM_SEED: 8664
+
+DATASET:
+  DATASET_TRAIN: 'XCP_LANDMARK_MASKSET'
+  DATASET_VALID: 'XCP_VALID'
+  ROOT: '/mnt/lvdisk1/miaodata/FF/'
+  TRAIN_TXT: 'train_c23.txt'
+  VALID_TXT: 'valid_c23.txt'
+  TRAIN_FRAMES: 30
+  VALID_FRAMES: 5
+  REALFAKE: 4
+  LANDMARK:
+    THICK: 1
+    EYE_RATE: 0.7
+    EYE_DILA: 4
+    NOSE_RATE: 0.8
+    NOSE_DILA: 4
+    MOUTH_RATE: 0.9
+    MOUTH_DILA: 3
+
+BACKBONE:
+  TYPE: 'xception_landmark_mask'
+  DROP_RATE: 0.9
+
+LOSS:
+  LOSS1_TYPE: 'BCE_Loss'
+  LOSS2_TYPE: 'L1_Loss'
+
+
+TRAIN:
+  BATCH_SIZE: 16
+  NITER: 15
+  NUM_WORKERS: 4
+  COLLATE_FN: 'collate_fn_6'
+  LOSS_RATIO:
+    MASK2: 0.2
+    MASK5: 0.8
+    MASK: 1.0
+  TENSORBOARD:
+    ENABLE: True
+  OPTIMIZER:
+    TYPE: 'ADAM'
+    BASE_LR: 0.00002
+
+
+TEST:
+  BATCH_SIZE: 12
+  NUM_WORKERS: 1

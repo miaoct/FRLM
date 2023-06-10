@@ -1,0 +1,41 @@
+NAME: 'C40_XCP_-30frames-CEloss_2_1.4'
+OUTPUT_DIR: './output/C40_new'
+SHOW_STEP: 100
+INPUT_SIZE: (299, 299)
+RESUME_MODEL: ""
+CPU_MODE: False
+RANDOM_SEED: 8664
+
+DATASET:
+  DATASET_TRAIN: 'XCP_SET'
+  DATASET_VALID: 'XCP_VALID'
+  ROOT: '/mnt/lvdisk1/miaodata/FF/'
+  TRAIN_TXT: 'train_c40.txt'
+  VALID_TXT: 'valid_c40.txt'
+  TRAIN_FRAMES: 30
+  VALID_FRAMES: 5
+  REALFAKE: 4
+  NEWFACE: True
+  NEWFACE_NAME: 'faces1.4'
+BACKBONE:
+  TYPE: 'xception_new'
+
+LOSS:
+  LOSS1_TYPE: 'CE_Loss'
+
+
+TRAIN:
+  BATCH_SIZE: 16
+  NITER: 15
+  NUM_WORKERS: 4
+  COLLATE_FN: 'collate_fn_2'
+  TENSORBOARD:
+    ENABLE: True
+  OPTIMIZER:
+    TYPE: 'ADAM'
+    BASE_LR: 0.00002
+
+
+TEST:
+  BATCH_SIZE: 12
+  NUM_WORKERS: 1

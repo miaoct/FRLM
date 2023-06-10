@@ -1,0 +1,62 @@
+NAME: 'C40_landmark_mask_2_5-20frames-rand-075'
+OUTPUT_DIR: './output/C40'
+SHOW_STEP: 5000
+SAVE_STEP: 1
+VALID_STEP: 1
+INPUT_SIZE: (380, 380)
+RESUME_MODEL: ""
+CPU_MODE: False
+RANDOM_SEED: 8664
+
+DATASET:
+  DATASET_TRAIN: 'EFF_LANDMARK_MASKSET'
+  DATASET_VALID: 'EFF_VALID'
+  ROOT: '/mnt/lvdisk1/miaodata/FF/'
+  TRAIN_TXT: 'train_c40_rand.txt'
+  VALID_TXT: 'valid_c40_rand.txt'
+  TRAIN_FRAMES: 20
+  VALID_FRAMES: 5
+  REALFAKE: 4
+  LANDMARK:
+    THICK: 1
+    EYE_RATE: 0.7
+    EYE_DILA: 8
+    NOSE_RATE: 0.8
+    NOSE_DILA: 8
+    MOUTH_RATE: 0.9
+    MOUTH_DILA: 6
+
+BACKBONE:
+  TYPE: 'EfficientNetAutoADLB7'
+  DROPOUT_RATE: 0
+  BLOCK_IDX: [2, 5]
+  DROP_RATE: 0.75
+
+LOSS:
+  LOSS1_TYPE: 'BCE_Loss'
+  LOSS2_TYPE: 'L1_Loss'
+
+
+TRAIN:
+  BATCH_SIZE: 24
+  MAX_EPOCH: 30
+  NUM_WORKERS: 4
+  COLLATE_FN: 'collate_fn_6'
+  LOSS_RATIO:
+    MASK2: 0.2
+    MASK5: 0.8
+    MASK: 1.0
+  TENSORBOARD:
+    ENABLE: True
+  OPTIMIZER:
+    TYPE: 'ADAM'
+    BASE_LR: 1e-5
+  LR_SCHEDULER:
+    TYPE: 'reduce'
+    LR_FACTOR: 0.1
+    PATIENCE: 10
+
+
+TEST:
+  BATCH_SIZE: 12
+  NUM_WORKERS: 1
